@@ -30,42 +30,50 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Vorname:">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label text="Nachname:" GridPane.columnIndex="2">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label text="Datum:" GridPane.rowIndex="3">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label text="Beginn:" GridPane.columnIndex="2" GridPane.rowIndex="3">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label text="Ende" GridPane.rowIndex="4">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label text="Beschreibung:" GridPane.columnIndex="2" GridPane.rowIndex="4">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txtBegin" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <TextField fx:id="txtEnd" maxWidth="192.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="txtDescription" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <DatePicker fx:id="datepicker" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="lblFirstname" text="Vorname" GridPane.columnIndex="1" />
-            <Label fx:id="lblSurname" text="Nachname" GridPane.columnIndex="3" />
+             <Label text="Vorname:">
+                 <font>
+                     <Font name="System Bold" size="13.0" />
+                 </font>
+             </Label>
+             <Label text="Nachname:" GridPane.columnIndex="2">
+                 <font>
+                     <Font name="System Bold" size="13.0" />
+                 </font>
+             </Label>
+             <Label text="Pfleger:" GridPane.rowIndex="1">
+                 <font>
+                     <Font name="System Bold" size="13.0" />
+                 </font>
+             </Label>
+             <Label text="Datum:" GridPane.rowIndex="3">
+                 <font>
+                     <Font name="System Bold" size="13.0" />
+                 </font>
+             </Label>
+             <Label text="Beginn:" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                 <font>
+                     <Font name="System Bold" size="13.0" />
+                 </font>
+             </Label>
+             <Label text="Ende" GridPane.rowIndex="4">
+                 <font>
+                     <Font name="System Bold" size="13.0" />
+                 </font>
+             </Label>
+             <Label text="Beschreibung:" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                 <font>
+                     <Font name="System Bold" size="13.0" />
+                 </font>
+             </Label>
+             <TextField fx:id="txtBegin" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+             <TextField fx:id="txtEnd" maxWidth="192.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+             <TextField fx:id="txtDescription" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+             <DatePicker fx:id="datepicker" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+             <Label fx:id="lblFirstname" text="Vorname" GridPane.columnIndex="1" />
+             <Label fx:id="lblSurname" text="Nachname" GridPane.columnIndex="3" />
+         </children>
+         <children>
+             <ComboBox fx:id="comboBoxPfleger" minWidth="160.0"   prefWidth="200.0" GridPane.rowIndex="1" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <HBox layoutX="298.0" layoutY="237.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="50.0">

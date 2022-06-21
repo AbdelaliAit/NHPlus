@@ -4,18 +4,33 @@ import utils.DateConverter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Treatment for patient.
+ */
 public class Treatment {
     private long tid;
     private long pid;
+    private long cgid;
     private LocalDate date;
     private LocalTime begin;
     private LocalTime end;
     private String description;
     private String remarks;
 
-    public Treatment(long pid, LocalDate date, LocalTime begin,
+    /**
+     * constructs a treatment from the given params.
+     * @param pid
+     * @param cgid
+     * @param date
+     * @param begin
+     * @param end
+     * @param description
+     * @param remarks
+     */
+    public Treatment(long pid, long cgid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
         this.pid = pid;
+        this.cgid = cgid;
         this.date = date;
         this.begin = begin;
         this.end = end;
@@ -23,10 +38,22 @@ public class Treatment {
         this.remarks = remarks;
     }
 
-    public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
+    /**
+     * constructs a treatment from the given params.
+     * @param tid
+     * @param pid
+     * @param cgid
+     * @param date
+     * @param begin
+     * @param end
+     * @param description
+     * @param remarks
+     */
+    public Treatment(long tid, long pid, long cgid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
         this.tid = tid;
         this.pid = pid;
+        this.cgid = cgid;
         this.date = date;
         this.begin = begin;
         this.end = end;
@@ -41,6 +68,8 @@ public class Treatment {
     public long getPid() {
         return this.pid;
     }
+
+    public long getCgid() { return this.cgid; }
 
     public String getDate() {
         return date.toString();

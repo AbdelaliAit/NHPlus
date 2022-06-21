@@ -1,11 +1,13 @@
 package controller;
 
+import datastorage.CareGiverDAO;
 import datastorage.DAOFactory;
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.CareGiver;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
@@ -15,6 +17,8 @@ import java.time.LocalDate;
 public class TreatmentController {
     @FXML
     private Label lblPatientName;
+    @FXML
+    private Label lblPflegeInfo;
     @FXML
     private Label lblCarelevel;
     @FXML
@@ -36,13 +40,16 @@ public class TreatmentController {
     private Stage stage;
     private Patient patient;
     private Treatment treatment;
+    private CareGiver caregiver;
 
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         this.stage = stage;
         this.controller= controller;
         PatientDAO pDao = DAOFactory.getDAOFactory().createPatientDAO();
+        CareGiverDAO cgDao = DAOFactory.getDAOFactory().createCareGiverDAO();
         try {
             this.patient = pDao.read((int) treatment.getPid());
+            this.caregiver = cgDao.read((int) treatment.getCgid());
             this.treatment = treatment;
             showData();
         } catch (SQLException e) {
@@ -53,6 +60,7 @@ public class TreatmentController {
     private void showData(){
         this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
         this.lblCarelevel.setText(patient.getCareLevel());
+        this.lblPflegeInfo.setText(caregiver.getSurname() + ", " + caregiver.getFirstName() + ", " + caregiver.getPhonenumber());
         LocalDate date = DateConverter.convertStringToLocalDate(treatment.getDate());
         this.datepicker.setValue(date);
         this.txtBegin.setText(this.treatment.getBegin());
