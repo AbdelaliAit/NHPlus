@@ -56,8 +56,16 @@
             </GridPane>
             <HBox alignment="TOP_CENTER" prefWidth="190.0" spacing="10.0">
                <children>
-                  <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="90.0" text="Hinzufügen" />
-                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeleteRow" prefWidth="90.0" text="Löschen" />
+                   <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="200.0" text="Hinzufügen" GridPane.columnIndex="2" GridPane.rowIndex="1" style="-fx-background-color: #24a0ed; -fx-text-fill: white; -fx-border-radius: 5; -fx-border-width: 2; -fx-border-color: #24a0ed;">
+                       <font>
+                           <Font size="12.0"/>
+                       </font>
+                   </Button>
+                   <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeleteRow" prefWidth="180.0" text="Löschen" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-border-radius: 5; -fx-border-width: 2; -fx-border-color: #e74c3c;">
+                       <font>
+                           <Font size="12.0"/>
+                       </font>
+                   </Button>
                </children>
             </HBox>
          </children>

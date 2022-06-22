@@ -76,10 +76,18 @@
              <ComboBox fx:id="comboBoxPfleger" minWidth="160.0"   prefWidth="200.0" GridPane.rowIndex="1" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <HBox layoutX="298.0" layoutY="237.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="50.0">
+       <HBox layoutX="298.0" layoutY="245.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="50.0">
          <children>
-            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" text="Anlegen" />
-            <Button fx:id="cancelButton" layoutX="298.0" layoutY="237.0" mnemonicParsing="false" onAction="#handleCancel" text="Abbruch" />
+             <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" text="Anlegen"  style="-fx-background-color: #24a0ed; -fx-text-fill: white; -fx-border-radius: 5; -fx-border-width: 2; -fx-border-color: #24a0ed;">
+                 <font>
+                     <Font size="12.0"/>
+                 </font>
+             </Button>
+             <Button fx:id="cancelButton" layoutX="298.0" layoutY="237.0" mnemonicParsing="false" onAction="#handleCancel" text="Abbruch" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-border-radius: 5; -fx-border-width: 2; -fx-border-color: #e74c3c;">
+                 <font>
+                     <Font size="12.0"/>
+                 </font>
+             </Button>
          </children>
       </HBox>
       <TextArea fx:id="taRemarks" layoutX="50.0" layoutY="252.0" prefHeight="134.0" prefWidth="700.0" AnchorPane.topAnchor="265.0" />

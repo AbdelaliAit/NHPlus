@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -51,14 +53,18 @@ public class MainWindowController {
     @FXML
     private void handlePflegerAbmelden(ActionEvent e) {
         try {
-            // Open Login Window
-            Parent part = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(part);
-            stage.setScene(scene);
-            stage.show();
-            Stage aktuell_stage = (Stage) mainBorderPane.getScene().getWindow();
-            aktuell_stage.close();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Möchten Sie sich wirklich abmelden ?", ButtonType.YES, ButtonType.NO);
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                // Open Login Window
+                Parent part = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(part);
+                stage.setScene(scene);
+                stage.show();
+                Stage aktuell_stage = (Stage) mainBorderPane.getScene().getWindow();
+                aktuell_stage.close();
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }

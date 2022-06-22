@@ -18,10 +18,10 @@ import java.sql.SQLException;
 public class LoginPflegerController {
     // Strings which hold css elements to easily re-use in the application
     protected
-    String successMessage = String.format("-fx-text-fill: GREEN;");
-    String errorMessage = String.format("-fx-text-fill: RED;");
-    String errorStyle = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
-    String successStyle = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
+    String successMessage = String.format("-fx-text-fill: #2ecc71;");
+    String errorMessage = String.format("-fx-text-fill: #e74c3c;");
+    String errorStyle = String.format("-fx-border-color: #e74c3c; -fx-border-width: 2; -fx-border-radius: 5;");
+    String successStyle = String.format("-fx-border-color: #27ae60; -fx-border-width: 2; -fx-border-radius: 5;");
 
     // Import the application's controls
     @FXML
