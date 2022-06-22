@@ -21,8 +21,8 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
      */
     @Override
     protected String getCreateStatementString(CareGiver careGiver) {
-        return String.format("INSERT INTO caregiver (firstname, surname, phonenumber, username, password) VALUES ('%s', '%s', '%s', '%s', '%s')",
-                careGiver.getFirstName(), careGiver.getSurname(), careGiver.getPhonenumber(), careGiver.getUsername(), careGiver.getPassword());
+        return String.format("INSERT INTO caregiver (firstname, surname, phonenumber, username, password, locked) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
+                careGiver.getFirstName(), careGiver.getSurname(), careGiver.getPhonenumber(), careGiver.getUsername(), careGiver.getPassword(), careGiver.getLocked());
     }
 
     @Override
@@ -34,14 +34,14 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
     protected CareGiver getInstanceFromResultSet(ResultSet result) throws SQLException {
         CareGiver cg = null;
         cg = new CareGiver(result.getInt(1), result.getString(2),
-                result.getString(3), result.getString(4), result.getString(5), result.getString(6));
+                result.getString(3), result.getString(4), result.getString(5), result.getString(6), result.getString(7));
         return cg;
     }
 
     public int nurseCheckLogin(String username, String password) throws SQLException {
-        String query = "SELECT COUNT(*) FROM CAREGIVER WHERE USERNAME = '%s' AND PASSWORD = '%s'";
+        String query = "SELECT COUNT(*) FROM CAREGIVER WHERE USERNAME = '%s' AND PASSWORD = '%s' AND locked = '%s'";
         Statement st = conn.createStatement();
-        ResultSet result = st.executeQuery(String.format(query, username, password));
+        ResultSet result = st.executeQuery(String.format(query, username, password, "n"));
         result.next();
         return result.getInt(1);
     }
@@ -59,7 +59,7 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
     }
 
     public int nurseCheckBehandlungenlast10Years(CareGiver careGiver) throws SQLException {
-        String query = "SELECT COUNT(*) FROM CAREGIVER INNER JOIN TREATMENT ON TREATMENT.CGID = CAREGIVER.CGID WHERE YEAR(CURDATE())-YEAR(TREATMENT.TREATMENT_DATE) <= 10 AND CAREGIVER.CGID = %d ";
+        String query = "SELECT COUNT(*) FROM CAREGIVER INNER JOIN TREATMENT ON TREATMENT.CGID = CAREGIVER.CGID WHERE CAST(DATEDIFF(CURDATE(), TREATMENT.TREATMENT_DATE)/365.25 as int ) <= 10 AND CAREGIVER.CGID = %d ";
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery(String.format(query, careGiver.getCgid()));
         result.next();
@@ -72,7 +72,7 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
      */
     @Override
     protected String getReadAllStatementString() {
-        return  String.format("SELECT * FROM caregiver");
+        return  String.format("SELECT * FROM caregiver where locked = '%s'", "n");
     }
 
     /**
@@ -86,7 +86,7 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
         CareGiver cg = null;
         while (result.next()) {
             cg = new CareGiver(result.getInt(1), result.getString(2),
-                    result.getString(3), result.getString(4), result.getString(5), result.getString(6));
+                    result.getString(3), result.getString(4), result.getString(5), result.getString(6), result.getString(7));
             list.add(cg);
         }
         return list;
@@ -113,5 +113,18 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
     @Override
     protected String getDeleteStatementString(long key) {
         return String.format("Delete FROM caregiver WHERE cgid=%d", key);
+    }
+
+    /**
+     * generates a <code>delete</code>-Statement for a given key
+     * @param careGiver for which a specific DELETE is to be created
+     * @return <code>String</code> with the generated SQL.
+     */
+    public void updateNurseLocked(CareGiver careGiver, String new_locked) throws SQLException {
+        String query = String.format("UPDATE caregiver SET LOCKED = '%s' WHERE cgid = %d",
+                new_locked,
+                careGiver.getCgid());
+        Statement st = conn.createStatement();
+        st.executeUpdate(query);
     }
 }

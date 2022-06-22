@@ -151,10 +151,24 @@ public class AllCareGiverController {
     @FXML
     public void handleDeleteRow() {
         CareGiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
+        int countBehandlungNurseLast10Years;
         try {
-            dao.deleteById(selectedItem.getCgid());
-            this.tableView.getItems().remove(selectedItem);
-            this.tableView.getItems().remove(selectedItem);
+            countBehandlungNurseLast10Years = dao.nurseCheckBehandlungenlast10Years(selectedItem);
+            // Pflegekraft hat keine Behandlung in letzten 10 Jahren durchgefuert.
+            // Pflegerkraft wird geloescht
+            if (countBehandlungNurseLast10Years <= 0) {
+                // Pflegerkraft loeschen
+                // Datenbank Bereinigung
+                TreatmentDAO treatment_dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+                treatment_dao.deleteTreatmentsByNurseId(selectedItem.getCgid());
+                dao.deleteById(selectedItem.getCgid());
+                this.tableView.getItems().remove(selectedItem);
+            } else {
+                // Pflegerkraft sperren
+                // Update Pfleger gesperrt = yes
+                dao.updateNurseLocked(selectedItem, "y");
+                this.tableView.getItems().remove(selectedItem);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -178,7 +192,7 @@ public class AllCareGiverController {
                 alert.setContentText("Please enter another username!");
                 alert.showAndWait();
             } else {
-                CareGiver cg = new CareGiver(firstname, surname,telefone, username, password);
+                CareGiver cg = new CareGiver(firstname, surname,telefone, username, password, "n");
                 dao.create(cg);
                 readAllAndShowInTableView();
                 clearTextfields();

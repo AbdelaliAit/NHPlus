@@ -104,4 +104,10 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         Statement st = conn.createStatement();
         st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
     }
+
+    // Delete treatments with nurse ID
+    public void deleteTreatmentsByNurseId(long cgid) throws SQLException {
+        Statement st = conn.createStatement();
+        st.executeUpdate(String.format("Delete FROM treatment WHERE cgid = %d", cgid));
+    }
 }

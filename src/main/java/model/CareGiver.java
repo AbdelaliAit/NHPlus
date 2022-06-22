@@ -7,6 +7,7 @@ public class CareGiver extends Person {
     private String phonenumber;
     private String username;
     private String password;
+    private String locked;
 
     /**
      * constructs a Nurse from the given params.
@@ -15,12 +16,14 @@ public class CareGiver extends Person {
      * @param phonenummber
      * @param username
      * @param password
+     * @param locked
      */
-    public CareGiver(String firstName, String surname, String phonenummber, String username, String password) {
+    public CareGiver(String firstName, String surname, String phonenummber, String username, String password, String locked) {
         super(firstName, surname);
         this.phonenumber = phonenummber;
         this.username = username;
         this.password = password;
+        this.locked = locked;
     }
 
     /**
@@ -31,12 +34,13 @@ public class CareGiver extends Person {
      * @param username
      * @param password
      */
-    public CareGiver(long cgid, String firstName, String surname, String phonenummber, String username, String password) {
+    public CareGiver(long cgid, String firstName, String surname, String phonenummber, String username, String password, String locked) {
         super(firstName, surname);
         this.cgid = cgid;
         this.phonenumber = phonenummber;
         this.username = username;
         this.password = password;
+        this.locked = locked;
     }
 
     /**
@@ -86,6 +90,24 @@ public class CareGiver extends Person {
     public String getPassword() {
         return password;
     }
+
+    /**
+     *
+     * @return Care Giver status (locked or no)
+     */
+    public String getLocked() {
+        return locked;
+    }
+
+    /**
+     *
+     * @param locked new value of locked (accept 'y' | 'n')
+     */
+    public void setLocked(String locked) {
+        if (locked == "y" || locked == "n")
+            this.locked = locked;
+    }
+
     /**
      *
      * @return string-representation of the nurse
