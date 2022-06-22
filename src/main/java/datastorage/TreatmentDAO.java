@@ -129,4 +129,10 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         st.executeUpdate(String.format("UPDATE treatment SET locked = 'y' WHERE tid = %d",
                 tr.getTid()));
     }
+
+    // Delete invalid treatments (Validity date 10 years)
+    public void deleteInvalidTreatments() throws SQLException {
+        Statement st = conn.createStatement();
+        st.executeUpdate(String.format("Delete FROM treatment WHERE CAST(DATEDIFF(CURDATE(), TREATMENT.TREATMENT_DATE)/365.25 as int ) > 10"));
+    }
 }
