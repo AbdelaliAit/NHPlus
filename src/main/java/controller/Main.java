@@ -1,16 +1,20 @@
 package controller;
 
 import datastorage.ConnectionBuilder;
+import datastorage.DAOFactory;
+import datastorage.TreatmentDAO;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -24,14 +28,9 @@ public class Main extends Application {
 
     public void mainWindow() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/MainWindowView.fxml"));
-            BorderPane pane = loader.load();
-
-            Scene scene = new Scene(pane);
-            this.primaryStage.setTitle("NHPlus");
-            this.primaryStage.setScene(scene);
-            this.primaryStage.setResizable(false);
-            this.primaryStage.show();
+            Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
 
             this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override

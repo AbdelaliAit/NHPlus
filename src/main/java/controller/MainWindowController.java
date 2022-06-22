@@ -3,7 +3,11 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class MainWindowController {
@@ -43,4 +47,21 @@ public class MainWindowController {
         }
         AllCareGiverController controller = loader.getController();
     }
+
+    @FXML
+    private void handlePflegerAbmelden(ActionEvent e) {
+        try {
+            // Open Login Window
+            Parent part = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(part);
+            stage.setScene(scene);
+            stage.show();
+            Stage aktuell_stage = (Stage) mainBorderPane.getScene().getWindow();
+            aktuell_stage.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

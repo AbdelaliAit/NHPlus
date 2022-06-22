@@ -2,13 +2,12 @@ package controller;
 
 import datastorage.CareGiverDAO;
 import datastorage.DAOFactory;
+import datastorage.PatientDAO;
+import datastorage.TreatmentDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.CareGiver;
@@ -26,6 +25,8 @@ public class AllCareGiverController {
     @FXML
     private TableColumn<CareGiver, String> colSurname;
     @FXML
+    private TableColumn<CareGiver, String> colUserName;
+    @FXML
     private TableColumn<CareGiver, String> colTelephone;
 
     @FXML
@@ -38,6 +39,10 @@ public class AllCareGiverController {
     TextField txtFirstname;
     @FXML
     TextField txtTelephone;
+    @FXML
+    TextField txtUserrname;
+    @FXML
+    PasswordField txtPassword;
 
     private ObservableList<CareGiver> tableviewContent = FXCollections.observableArrayList();
     private CareGiverDAO dao;
@@ -62,6 +67,8 @@ public class AllCareGiverController {
         this.colTelephone.setCellValueFactory(new PropertyValueFactory<CareGiver, String>("phonenumber"));
         this.colTelephone.setCellFactory(TextFieldTableCell.forTableColumn());
 
+        this.colUserName.setCellValueFactory(new PropertyValueFactory<CareGiver, String>("username"));
+        this.colUserName.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //Anzeigen der Daten
         this.tableView.setItems(this.tableviewContent);
@@ -99,6 +106,16 @@ public class AllCareGiverController {
     }
 
     /**
+     * handles new firstname value
+     * @param event event including the value that a user entered into the cell
+     */
+    @FXML
+    public void handleOnEditUsername(TableColumn.CellEditEvent<CareGiver, String> event){
+        event.getRowValue().setUsername(event.getNewValue());
+        doUpdate(event);
+    }
+
+    /**
      * updates a nurse by calling the update-Method in the {@link CareGiverDAO}
      * @param t row to be updated by the user (includes the nurse)
      */
@@ -128,7 +145,8 @@ public class AllCareGiverController {
     }
 
     /**
-     * handles a delete-click-event. Calls the delete methods in the {@link CareGiverDAO}
+     * handles a delete-click-event. Calls the delete methods in the {@link PatientDAO} and {@link TreatmentDAO}
+     * Beim Loeschen einer Pflegekraft muss ebenfalls die 10 Jahresregelung beruecksichtigt werden
      */
     @FXML
     public void handleDeleteRow() {
@@ -150,14 +168,24 @@ public class AllCareGiverController {
         String surname = this.txtSurname.getText();
         String firstname = this.txtFirstname.getText();
         String telefone = this.txtTelephone.getText();
+        String username = this.txtUserrname.getText();
+        String password = this.txtPassword.getText();
         try {
-            CareGiver cg = new CareGiver(firstname, surname,telefone);
-            dao.create(cg);
+            if(dao.CheckIfNurseUsernameExist(username)) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText("Username exist already!");
+                alert.setContentText("Please enter another username!");
+                alert.showAndWait();
+            } else {
+                CareGiver cg = new CareGiver(firstname, surname,telefone, username, password);
+                dao.create(cg);
+                readAllAndShowInTableView();
+                clearTextfields();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        readAllAndShowInTableView();
-        clearTextfields();
     }
 
     /**
@@ -167,5 +195,7 @@ public class AllCareGiverController {
         this.txtFirstname.clear();
         this.txtSurname.clear();
         this.txtTelephone.clear();
+        this.txtUserrname.clear();
+        this.txtPassword.clear();
     }
 }

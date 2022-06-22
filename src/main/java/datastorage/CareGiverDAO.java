@@ -21,8 +21,8 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
      */
     @Override
     protected String getCreateStatementString(CareGiver careGiver) {
-        return String.format("INSERT INTO caregiver (firstname, surname, phonenumber) VALUES ('%s', '%s', '%s')",
-                careGiver.getFirstName(), careGiver.getSurname(), careGiver.getPhonenumber());
+        return String.format("INSERT INTO caregiver (firstname, surname, phonenumber, username, password) VALUES ('%s', '%s', '%s', '%s', '%s')",
+                careGiver.getFirstName(), careGiver.getSurname(), careGiver.getPhonenumber(), careGiver.getUsername(), careGiver.getPassword());
     }
 
     @Override
@@ -34,8 +34,36 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
     protected CareGiver getInstanceFromResultSet(ResultSet result) throws SQLException {
         CareGiver cg = null;
         cg = new CareGiver(result.getInt(1), result.getString(2),
-                result.getString(3), result.getString(4));
+                result.getString(3), result.getString(4), result.getString(5), result.getString(6));
         return cg;
+    }
+
+    public int nurseCheckLogin(String username, String password) throws SQLException {
+        String query = "SELECT COUNT(*) FROM CAREGIVER WHERE USERNAME = '%s' AND PASSWORD = '%s'";
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery(String.format(query, username, password));
+        result.next();
+        return result.getInt(1);
+    }
+
+    public boolean CheckIfNurseUsernameExist(String username) throws SQLException {
+        String query = "SELECT COUNT(*) FROM CAREGIVER WHERE USERNAME = '%s'";
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery(String.format(query, username));
+        result.next();
+        if (result.getInt(1) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int nurseCheckBehandlungenlast10Years(CareGiver careGiver) throws SQLException {
+        String query = "SELECT COUNT(*) FROM CAREGIVER INNER JOIN TREATMENT ON TREATMENT.CGID = CAREGIVER.CGID WHERE YEAR(CURDATE())-YEAR(TREATMENT.TREATMENT_DATE) <= 10 AND CAREGIVER.CGID = %d ";
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery(String.format(query, careGiver.getCgid()));
+        result.next();
+        return result.getInt(1);
     }
 
     /**
@@ -58,7 +86,7 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
         CareGiver cg = null;
         while (result.next()) {
             cg = new CareGiver(result.getInt(1), result.getString(2),
-                    result.getString(3), result.getString(4));
+                    result.getString(3), result.getString(4), result.getString(5), result.getString(6));
             list.add(cg);
         }
         return list;
@@ -71,8 +99,8 @@ public class CareGiverDAO extends DAOimp<CareGiver> {
      */
     @Override
     protected String getUpdateStatementString(CareGiver careGiver) {
-        return String.format("UPDATE caregiver SET firstname = '%s', surname = '%s', phonenumber = '%s'WHERE cgid = %d",
-                careGiver.getFirstName(), careGiver.getSurname(), careGiver.getPhonenumber(),
+        return String.format("UPDATE caregiver SET firstname = '%s', surname = '%s', phonenumber = '%s' , username = '%s' WHERE cgid = %d",
+                careGiver.getFirstName(), careGiver.getSurname(), careGiver.getPhonenumber(), careGiver.getUsername(),
                 careGiver.getCgid());
     }
 

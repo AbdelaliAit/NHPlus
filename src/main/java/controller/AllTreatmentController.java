@@ -220,8 +220,8 @@ public class AllTreatmentController {
         catch(NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
-            alert.setHeaderText("Patient für die Behandlung fehlt!");
-            alert.setContentText("Wählen Sie über die Combobox einen Patienten aus!");
+            alert.setHeaderText("Patient/Pfleger für die Behandlung fehlt!");
+            alert.setContentText("Wählen Sie über die Combobox einen Patienten und einen Pfleger aus!");
             alert.showAndWait();
         }
     }
