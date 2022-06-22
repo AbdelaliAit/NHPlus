@@ -27,7 +27,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getReadByIDStatementString(long key) {
-        return String.format("SELECT * FROM treatment WHERE tid = %d", key);
+        return String.format("SELECT * FROM treatment WHERE tid = %d AND locked = 'n'", key);
     }
 
     @Override
@@ -36,13 +36,13 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
         Treatment m = new Treatment(result.getLong(1), result.getLong(2),
-                date, begin, end, result.getString(6), result.getString(7));
+                date, begin, end, result.getString(6), result.getString(7), result.getString(9));
         return m;
     }
 
     @Override
     protected String getReadAllStatementString() {
-        return "SELECT * FROM treatment";
+        return "SELECT * FROM treatment WHERE locked = 'n'";
     }
 
 
@@ -64,7 +64,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
             LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(5));
             LocalTime end = DateConverter.convertStringToLocalTime(result.getString(6));
             t = new Treatment(result.getLong(1), result.getLong(2), result.getLong(3),
-                    date, begin, end, result.getString(7), result.getString(8));
+                    date, begin, end, result.getString(7), result.getString(8), result.getString(9));
             list.add(t);
         }
         return list;
@@ -93,11 +93,11 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     private String getReadAllTreatmentsOfOnePatientByPid(long pid){
-        return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
+        return String.format("SELECT * FROM treatment WHERE pid = %d AND locked = 'n'", pid);
     }
 
     private String getReadAllTreatmentsOfOneCareGiverByPid(long pid){
-        return String.format("SELECT * FROM treatment WHERE cgid = %d", pid);
+        return String.format("SELECT * FROM treatment WHERE cgid = %d  AND locked = 'n'", pid);
     }
 
     public void deleteByPid(long key) throws SQLException {
@@ -109,5 +109,24 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     public void deleteTreatmentsByNurseId(long cgid) throws SQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(String.format("Delete FROM treatment WHERE cgid = %d", cgid));
+    }
+
+    // true (Behandlung ist in der letzeten 10 Jahren) -> sperren  || false (Behandlung ist mehr als 10 Jahren duchgefuehrt)-> loeschen
+    public boolean checkValidityTreatment(Treatment tr) throws SQLException {
+        String query = "SELECT COUNT(*) FROM treatment WHERE CAST(DATEDIFF(CURDATE(), TREATMENT.TREATMENT_DATE)/365.25 as int ) <= 10 AND tid= %d ";
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery(String.format(query, tr.getTid()));
+        result.next();
+        if (result.getInt(1) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void lockTreatment(Treatment tr) throws SQLException {
+        Statement st = conn.createStatement();
+        st.executeUpdate(String.format("UPDATE treatment SET locked = 'y' WHERE tid = %d",
+                tr.getTid()));
     }
 }

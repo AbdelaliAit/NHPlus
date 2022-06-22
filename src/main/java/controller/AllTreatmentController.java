@@ -197,14 +197,36 @@ public class AllTreatmentController {
     }
 
     @FXML
-    public void handleDelete(){
+    public void handleDelete() throws SQLException {
         int index = this.tableView.getSelectionModel().getSelectedIndex();
-        Treatment t = this.tableviewContent.remove(index);
+        Treatment treatment = this.tableviewContent.get(index);
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
-        try {
-            dao.deleteById(t.getTid());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        boolean checkValidityBehandlung = dao.checkValidityTreatment(treatment);
+        Treatment t = this.tableviewContent.remove(index);
+        if (checkValidityBehandlung) {
+            // Behandlung sperren
+            try {
+                dao.lockTreatment(treatment);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText("Verfahren ist erfolgreich abgeschlossen");
+                alert.setContentText("Behandlung ist gesperrt!");
+                alert.showAndWait();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Behandlung loeschen
+            try {
+                dao.deleteById(t.getTid());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText("Verfahren ist erfolgreich abgeschlossen");
+                alert.setContentText("Behandlung ist gelöscht!");
+                alert.showAndWait();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

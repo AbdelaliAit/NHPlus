@@ -89,7 +89,7 @@ public class NewTreatmentController {
         String pfleger_name = this.comboBoxPfleger.getSelectionModel().getSelectedItem();
         CareGiver caregiver = searchInListCareGiver(pfleger_name);
         Treatment treatment = new Treatment(patient.getPid(), caregiver.getCgid(), date,
-                begin, end, description, remarks);
+                begin, end, description, remarks, "n");
         createTreatment(treatment);
         controller.readAllAndShowInTableView();
         stage.close();
