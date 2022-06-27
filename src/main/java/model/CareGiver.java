@@ -44,7 +44,7 @@ public class CareGiver extends Person {
     }
 
     /**
-     *
+     * Returns Nurse ID
      * @return Nurse id
      */
     public long getCgid() {
@@ -52,7 +52,7 @@ public class CareGiver extends Person {
     }
 
     /**
-     *
+     * Returns Nurse phonenumber
      * @return nurse phonenumber
      */
     public String getPhonenumber() {
@@ -60,7 +60,7 @@ public class CareGiver extends Person {
     }
 
     /**
-     *
+     * to set nurse phonenumber
      * @param phonenumber new phone number
      */
     public void setPhonenumber(String phonenumber) {
@@ -68,7 +68,7 @@ public class CareGiver extends Person {
     }
 
     /**
-     *
+     * Returns Nurse Username
      * @return nurse Username
      */
     public String getUsername() {
@@ -76,7 +76,7 @@ public class CareGiver extends Person {
     }
 
     /**
-     *
+     * to set username for nurse
      * @param username new username
      */
     public void setUsername(String username) {
@@ -84,7 +84,7 @@ public class CareGiver extends Person {
     }
 
     /**
-     *
+     * Returns nurse password
      * @return nurse password
      */
     public String getPassword() {
@@ -92,8 +92,8 @@ public class CareGiver extends Person {
     }
 
     /**
-     *
-     * @return Care Giver status (locked or no)
+     * Returns nurse status
+     * @return nurse status (locked or no)
      */
     public String getLocked() {
         return locked;
@@ -109,7 +109,7 @@ public class CareGiver extends Person {
     }
 
     /**
-     *
+     * return representation of the nurse
      * @return string-representation of the nurse
      */
     public String toString() {

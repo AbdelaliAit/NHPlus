@@ -33,9 +33,11 @@ public class Main extends Application {
 
     public void mainWindow() {
         try {
+            // Pruefen, ob es Behandlungen in der Datenbank gibt, die geloescht soll (Echtes Loeschen erst nach 10 Jahren).
             // https://www.tutorialspoint.com/java/util/timer_scheduleatfixedrate_delay.htm
             // java-scheduledexecutorservice ( Siehe : https://stackoverflow.com/questions/20387881/how-to-run-certain-task-every-day-at-a-particular-time-using-scheduledexecutorse)
             // Bereinigung von Tabelle Behandlung der Datenbank soll jeden Tag am 02:00 anfangen.
+            // Wenn die Tageszeit vor dem Datum von Cron liegt, dann wird Cron morgen durchgefuehrt
             String timeToStart = "02:00:00";
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss");
             SimpleDateFormat formatOnlyDay = new SimpleDateFormat("yyyy-MM-dd");
@@ -59,10 +61,11 @@ public class Main extends Application {
                             tdao.deleteInvalidTreatments();
 
                         } catch(Exception ex) {
-                            ex.printStackTrace(); //or loggger would be better
+                            ex.printStackTrace();
                         }
                     }, TimeUnit.MILLISECONDS.toSeconds(diff) ,
-                    24*60*60, TimeUnit.SECONDS);
+                    24*60*60, TimeUnit.SECONDS
+            );
 
             Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
             primaryStage.setScene(new Scene(root));

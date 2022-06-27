@@ -133,6 +133,6 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     // Delete invalid treatments (Validity date 10 years)
     public void deleteInvalidTreatments() throws SQLException {
         Statement st = conn.createStatement();
-        st.executeUpdate(String.format("Delete FROM treatment WHERE CAST(DATEDIFF(CURDATE(), TREATMENT.TREATMENT_DATE)/365.25 as int ) > 10"));
+        st.executeUpdate(String.format("Delete FROM treatment WHERE CAST(DATEDIFF(CURDATE(), TREATMENT.TREATMENT_DATE)/365.25 as int ) > 10 AND locked = locked = 'y' "));
     }
 }
