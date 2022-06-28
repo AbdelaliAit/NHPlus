@@ -86,9 +86,7 @@ public class AllTreatmentController {
         List<Treatment> allTreatments;
         try {
             allTreatments = dao.readAll();
-            for (Treatment treatment : allTreatments) {
-                this.tableviewContent.add(treatment);
-            }
+            this.tableviewContent.addAll(allTreatments);
         } catch (SQLException e) {
             e.printStackTrace();
         }
