@@ -92,8 +92,21 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return list;
     }
 
+    public List<Treatment> readTreatmentsByPidUndNid(long pid, long pfleger_id) throws SQLException {
+        ArrayList<Treatment> list = new ArrayList<Treatment>();
+        Treatment object = null;
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery(getReadAllTreatmentsOfByPatientPidAndNurseId(pid, pfleger_id));
+        list = getListFromResultSet(result);
+        return list;
+    }
+
     private String getReadAllTreatmentsOfOnePatientByPid(long pid){
         return String.format("SELECT * FROM treatment WHERE pid = %d AND locked = 'n'", pid);
+    }
+
+    private String getReadAllTreatmentsOfByPatientPidAndNurseId(long pid, long nid){
+        return String.format("SELECT * FROM treatment WHERE pid = %d AND cgid = %d AND locked = 'n'", pid, nid);
     }
 
     private String getReadAllTreatmentsOfOneCareGiverByPid(long pid){

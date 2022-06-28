@@ -1,3 +1,0 @@
-/*C3*/SET SCHEMA PUBLIC
-INSERT INTO CAREGIVER VALUES(42,'Max','Mustermann','+49XXXX','max','max','n')
-COMMIT

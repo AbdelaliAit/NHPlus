@@ -123,6 +123,7 @@ public class AllTreatmentController {
     @FXML
     public void handleComboBox(){
         String p = this.comboBox.getSelectionModel().getSelectedItem();
+        String pfleger_surname = this.comboBoxPfleger.getSelectionModel().getSelectedItem();
         this.tableviewContent.clear();
         this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         List<Treatment> allTreatments;
@@ -137,11 +138,19 @@ public class AllTreatmentController {
             }
         }
         Patient patient = searchInList(p);
-        if(patient !=null){
+        CareGiver pfleger = searchInListCareGiver(pfleger_surname);
+        if(patient != null){
             try {
-                allTreatments = dao.readTreatmentsByPid(patient.getPid());
-                for (Treatment treatment : allTreatments) {
-                    this.tableviewContent.add(treatment);
+                if (pfleger != null) {
+                    allTreatments = dao.readTreatmentsByPidUndNid(patient.getPid(), pfleger.getCgid());
+                    for (Treatment treatment : allTreatments) {
+                        this.tableviewContent.add(treatment);
+                    }
+                } else {
+                    allTreatments = dao.readTreatmentsByPid(patient.getPid());
+                    for (Treatment treatment : allTreatments) {
+                        this.tableviewContent.add(treatment);
+                    }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -152,6 +161,7 @@ public class AllTreatmentController {
     @FXML
     public void handleCareGiverComboBox(){
         String p = this.comboBoxPfleger.getSelectionModel().getSelectedItem();
+        String patient_surname = this.comboBox.getSelectionModel().getSelectedItem();
         this.tableviewContent.clear();
         this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         List<Treatment> allTreatments;
@@ -166,11 +176,19 @@ public class AllTreatmentController {
             }
         }
         CareGiver careGiver = searchInListCareGiver(p);
+        Patient patient = searchInList(patient_surname);
         if(careGiver != null){
             try {
-                allTreatments = dao.readTreatmentsByCareGiverid(careGiver.getCgid());
-                for (Treatment treatment : allTreatments) {
-                    this.tableviewContent.add(treatment);
+                if (patient != null) {
+                    allTreatments = dao.readTreatmentsByPidUndNid(patient.getPid(), careGiver.getCgid());
+                    for (Treatment treatment : allTreatments) {
+                        this.tableviewContent.add(treatment);
+                    }
+                } else {
+                    allTreatments = dao.readTreatmentsByCareGiverid(careGiver.getCgid());
+                    for (Treatment treatment : allTreatments) {
+                        this.tableviewContent.add(treatment);
+                    }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
